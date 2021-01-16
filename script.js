@@ -20,24 +20,6 @@ const checkParentsStyled = (node, tag) => {
     return checkParentsStyled(node.parentNode, tag);
 }
 
-const checkChildrenStyled = (node, tag) => {
-    if (!node.childNodes || node.childNodes.length === 0) {
-        return false;
-    }
-    return Array.from(node.childNodes).reduce((acc, childNode) => {
-        if (childNode.localName === tag) {
-            return true;
-        }
-
-        if (acc) {
-            return acc
-        }
-
-        return checkChildrenStyled(childNode, tag);
-    }, false)
-}
-
-
 const getTextNodesBetween = (nodes) => {
     const textNodes = [];
 
