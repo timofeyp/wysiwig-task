@@ -88,11 +88,13 @@ const setTag = tag => {
             let newNode = document.createTextNode(node.nodeValue);
             if (tag !== 'i' && checkParentsStyled(node, 'i')) {
                 const iParent = document.createElement('i');
+                iParent.className = 'italic-text';
                 iParent.appendChild(newNode);
                 newNode = iParent;
             }
             if (tag !== 'b' && checkParentsStyled(node, 'b')) {
                 const bParent = document.createElement('b');
+                bParent.className = 'bold-text';
                 bParent.appendChild(newNode);
                 newNode = bParent;
             }
