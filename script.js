@@ -38,32 +38,36 @@ const getTextNodesBetween = (nodes) => {
     return textNodes;
 };
 
-const setHeader = (tag, className) => {
+const getRange = () => {
     const selection = document.getSelection();
-    if (selection && !selection.isCollapsed) {
+    const isSelectionOfEdit = document.getElementById('edit-area').contains(selection.baseNode);
+    if (selection && isSelectionOfEdit && !selection.isCollapsed) {
         const selection = document.getSelection();
         const range = new Range();
         range.setStart(getLeftNode(selection), getLeftOffset(selection));
         range.setEnd(getRightNode(selection), getRightOffset(selection));
 
+        return range
+    }
+}
+
+const setHeader = (tag, className) => {
+    const range = getRange();
+
+    if (range) {
         const header = document.createElement(tag)
         header.appendChild(range.extractContents());
         header.className = className;
+        header.style.fontSize = tag === 'h1' ? '32px' : '24px';
         return range.insertNode(header);
     }
 }
 
 const setTag = tag => {
-    const selection = document.getSelection();
-    if (selection && !selection.isCollapsed) {
-        const range = new Range();
-        range.setStart(getLeftNode(selection), getLeftOffset(selection));
-        range.setEnd(getRightNode(selection), getRightOffset(selection));
-
+    const range = getRange();
+    if (range) {
         const clone = range.cloneContents();
-
         const textNodes = getTextNodesBetween(clone.childNodes);
-
         const parentStyledElement = document.createElement(tag);
 
         textNodes.forEach(node => {
@@ -89,16 +93,16 @@ const setTag = tag => {
 }
 
 document.querySelector('#toolkit').addEventListener('click', (event) => {
-    if (event.target.parentNode && event.target.parentNode.id === 'head-1') {
+    if (event.target.id === 'head-1' || (event.target.parentNode && event.target.parentNode.id === 'head-1')) {
         setHeader('h1', 'header1-text')
     }
-    if (event.target.parentNode && event.target.parentNode.id === 'head-2') {
+    if (event.target.id === 'head-2' || (event.target.parentNode && event.target.parentNode.id === 'head-2')) {
         setHeader('h2', 'header2-text')
     }
-    if (event.target.parentNode && event.target.parentNode.id === 'bold') {
+    if (event.target.id === 'bold' || (event.target.parentNode && event.target.parentNode.id === 'bold')) {
         setTag('b')
     }
-    if (event.target.parentNode && event.target.parentNode.id === 'italic') {
+    if (event.target.id === 'italic' || (event.target.parentNode && event.target.parentNode.id === 'italic')) {
         setTag('i')
     }
 });
