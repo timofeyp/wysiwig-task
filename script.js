@@ -58,7 +58,6 @@ const setHeader = (tag, className) => {
         const header = document.createElement(tag)
         header.appendChild(range.extractContents());
         header.className = className;
-        header.style.fontSize = tag === 'h1' ? '32px' : '24px';
         return range.insertNode(header);
     }
 }
